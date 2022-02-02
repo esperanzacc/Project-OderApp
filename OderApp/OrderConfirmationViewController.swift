@@ -25,7 +25,7 @@ class OrderConfirmationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.performSegue(withIdentifier: "confirmOrder", sender: nil)
+//        self.performSegue(withIdentifier: "confirmOrder", sender: nil)
         confirmationLabel.text = "Thank you for your order! Your wait time is approximately \(minutesToPrepare) minutes."
 
         // Do any additional setup after loading the view.

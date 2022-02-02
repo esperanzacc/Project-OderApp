@@ -93,9 +93,11 @@ class OrderTableViewController: UITableViewController {
     
     func uploadOrder() {
         let menuIds = MenuController.shared.order.menuItems.map { $0.id }
+        print(menuIds)
         Task.init {
             do {
                 let minutesToPrepare = try await MenuController.shared.submitOrder(forMenuIDs: menuIds)
+                print(minutesToPrepare)
                 minutesToPrepareOrder = minutesToPrepare
                 performSegue(withIdentifier: "confirmOrder", sender: nil)
             } catch {

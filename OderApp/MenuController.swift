@@ -63,24 +63,30 @@ func fetchMenuItems(forCategory categoryName: String) async throws -> [MenuItem]
 // post to /order. include the collection of menu item IDs that the user selected. response will be an integer specifying the number of minutes the order will take to prep.
 
 typealias MinutesToPrePare = Int
+    
 func submitOrder(forMenuIDs menuIDs: [Int]) async throws -> MinutesToPrePare {
     let orderURL = baseURL.appendingPathComponent("order")
     var request = URLRequest(url: orderURL)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
-    let menuIdsDict = ["menusIds": menuIDs]
+    let menuIdsDict = ["menuIds": menuIDs]
+    print(menuIdsDict)
     let jsonEnCoder = JSONEncoder()
     let jsonData = try? jsonEnCoder.encode(menuIdsDict)
     request.httpBody = jsonData
     
     let (data, response) = try await URLSession.shared.data(for: request)
+    print(response)
+
+    
     guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
         throw MenuControllerError.orderRequestFailed
     }
     
     let decoder = JSONDecoder()
     let orderResponse = try decoder.decode(OrderResponse.self, from: data)
+    print(orderResponse.prepTime)
     return orderResponse.prepTime
     
 }
